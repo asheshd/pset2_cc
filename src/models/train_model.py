@@ -1,4 +1,5 @@
 from sklearn.neural_network import MLPClassifier
+from sklearn.ensemble import RandomForestClassifier
 import os
 import numpy as np
 import pickle
@@ -10,7 +11,8 @@ y_train = np.genfromtxt("data/processed/train_labels.csv")
 
 # Fit a model
 
-model = MLPClassifier(random_state=0, max_iter=15)
+# model = MLPClassifier(random_state=0, max_iter=15)
+model = RandomForestClassifier(max_depth=2, random_state=0)
 
 model.fit(X_train, y_train)
 
