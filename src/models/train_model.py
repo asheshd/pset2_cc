@@ -10,7 +10,7 @@ y_train = np.genfromtxt("data/processed/train_labels.csv")
 
 # Fit a model
 
-model = MLPClassifier(random_state=0, max_iter=15)
+model = MLPClassifier(random_state=0, max_iter=1)
 
 model.fit(X_train, y_train)
 
