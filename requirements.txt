@@ -2,6 +2,9 @@
 -e .
 
 # external requirements
+sklearn
+pandas
+matplotlib
 click
 Sphinx
 coverage
