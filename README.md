@@ -1,7 +1,7 @@
 pset2_cc
 ==============================
 
-PSet with Data Science Cookiecutter
+PSe2t with Data Science Cookiecutter, DVC and CML
 
 Project Organization
 ------------
