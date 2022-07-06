@@ -231,10 +231,12 @@ Here is a list of python packages required to run this project.
 
 
 
-<!-- USAGE EXAMPLES -->
+<!-- Results -->
 ## Results
 
 The following screenshot shows the metric data from the model training and prediction. The improvement in accuracy, precision and recall can be clearly seen in the indicator.
+
+See a pull request for live dashboard.
 
 ![Metrics](https://user-images.githubusercontent.com/42042450/177474268-1d6921e1-7af0-4d32-9eed-22f64e37f6d7.png)
 
