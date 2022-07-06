@@ -17,21 +17,21 @@ y_test = np.genfromtxt("data/processed/test_labels.csv")
 model_store = ModelStore.from_aws_s3("iiscdvc")
 domain_name = "pset2-prod-mlcp-model"
 
-# model_path = model_store.download(
-#    local_path=".",
-#    domain=domain_name
-# )
+model_path = model_store.download(
+   local_path=".",
+   domain=domain_name
+)
 
-# model_name  = os.path.join(model_path, "model")
-# print ("Successfully loaded model from S3")
-# print (os.listdir(model_name))
+model_name  = os.path.join(model_path, "model")
+print ("Successfully loaded model from S3")
+print (os.listdir(model_name))
 
 # Load Model from S3
-model =  model_store.load(domain_name)
-print(model)
+# model =  model_store.load(domain_name)
+# print(model)
 
 #  Local loading for evaluation
-# model = pickle.load(open(os.path.join("models", filename), 'rb'))
+model = pickle.load(open(os.path.join("models", filename), 'rb'))
 
 # Get overall accuracy
 acc = model.score(X_test, y_test)
