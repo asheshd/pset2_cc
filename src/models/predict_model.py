@@ -27,7 +27,7 @@ domain_name = "pset2-prod-mlcp-model"
 # print (os.listdir(model_name))
 
 # Load Model from S3
-model =  modelstore.load(domain_name)
+model =  model_store.load(domain_name)
 print(model)
 
 #  Local loading for evaluation
