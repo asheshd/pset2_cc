@@ -24,12 +24,15 @@
 
 
 <!-- TABLE OF CONTENTS -->
-<details>
+<details open>
   <summary>Table of Contents</summary>
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
       <ul>
+        <li><a href="#data-pipeline">Data Pipeline</a></li>
+        <li><a href="#the-chain-and-the-tools-are-as-follow">Tool chain</a></li>
+        <li><a href="#web-app">Web App</a></li>
         <li><a href="#built-with">Built With</a></li>
       </ul>
     </li>
@@ -41,6 +44,7 @@
       </ul>
     </li>
     <li><a href="#results">Results</a></li>
+    <li><a href="#project-structure">Project Structure</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -57,8 +61,13 @@ This project caters to complete MLOps cycle of model training, deployment and se
   
 The tools used in achieving this goal are presented in the figure below, along with the flow of control/data.
 
+![Tool chain](https://user-images.githubusercontent.com/42042450/177481512-980af425-8026-42d1-9e3f-ea73671eb782.png)
 
-![IISc MLOps Project](https://user-images.githubusercontent.com/42042450/177289974-1e8c5308-74ca-432e-985d-670a19d0dd31.png)
+### Data Pipeline:
+
+![PSET2 IISc Project](https://user-images.githubusercontent.com/42042450/177481035-f34f1497-d079-4bcb-9741-1be8b54d82ae.png)
+
+https://dagshub.com/asheshd/pset2_cc?filter=data
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
