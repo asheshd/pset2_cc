@@ -80,11 +80,11 @@ The datset is created with sklearn random make_classisfication with 100000 sets.
 
 GitHub is used for version control of the project's core ML training and model generation codes. Additionally, it is also maintaining the code to serve the updated model to the web application.
 
-CML and DVC.
+CML is used for continuous integration and continuous deployment and DVC is used for data management in this project.
     
-GitHub Actions is the main orchestrator in the flow. Whenever the repositories are updated, it runs the corresponding action scripts (.yaml). Whenever the main project is updated, the GitHub Actions workflow establishes an environment with python3 and installs all the requirements from the requirements.txt file. The requirements include libraries like tensorflow, keras, modelstore, boto3, and other common libraries. Tensorflow and keras are needed to execute the script for training the model from scratch on cloud. Boto3 and modelstore are required to generate the model in a format that AWS S3 supports for model hosting. Additionally, the keys required to make seamless access to AWS are defined in the yaml file while they are stored as secrets.
+GitHub Actions is the main orchestrator in the flow. Whenever the repositories are updated, it runs the corresponding action scripts (.yaml). Whenever the main project is updated, the GitHub Actions workflow establishes an environment with python3 and installs all the requirements from the requirements.txt file. The requirements include libraries like sklearn, keras, modelstore, boto3, and other common libraries. sklearn is needed to execute the script for training the model with MLCP classifier on cloud. Boto3 and modelstore are required to generate the model in a format that AWS S3 supports for model hosting. Additionally, the keys required to make seamless access to AWS are defined in the yaml file while they are stored as secrets.
     
-GitHub Actions also triggers the back-end project for the web application on every update. In order to setup the environment for calling the model from web application another set of requirements are installed which are same as the previous set of requirements. GitHub actions runs the script to call streamlit web application.
+GitHub Actions with CML.yaml also triggers the back-end project for the web application on every update. In order to setup the environment for calling the model from web application another set of requirements are installed which are same as the previous set of requirements. GitHub actions runs the script to call streamlit web application.
     
 #### Model Deployment to AWS S3 bucket
 The model is deployed to the Amazon AWS s3 bucket where it is launched to be consumed in any service. The modelstore library provides simple APIs to save and load the ML model from any authorised tool.
@@ -92,9 +92,77 @@ The model is deployed to the Amazon AWS s3 bucket where it is launched to be con
 #### Model querying and serving on web
 The web hosting application resides is called from GitHub Actions. The underlying script also loads the S3 model from AWS. Streamlit tool provides a fast and easy framework with many easy-to-use APIs that can be called from a python script. In this project, it is called from the GitHub project. It provides a simple and fast UI to query the underlying model and see the results immediately on the page.
 
-### Web App
+### CML.Yaml
 
-https://github.com/asheshd/MLOps-IISc-Proj-UI - A web UI project to serve model for AWS and make prediction for the top N movies recommendation.
+```sh
+name: PSET2 CML Runner
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: [ubuntu-latest]
+  
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: iterative/setup-cml@v1
+
+      - uses: iterative/setup-dvc@v1
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: cml
+        env:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          pip install -r requirements.txt
+          
+          # Pull dataset with DVC 
+          dvc pull data
+          
+          # Reproduce pipeline if any changes detected in dependencies
+          dvc repro 
+          
+          # Use DVC metrics diff to compare metrics to main
+          git fetch --prune --unshallow
+          dvc metrics diff --show-md $DEFAULT_BRANCH >> report.md
+          
+          # Add figure to report
+          dvc plots diff --target reports/loss.csv --show-vega $DEFAULT_BRANCH > vega.json
+                   
+          vl2png vega.json -s 1.5 > reports/plot.png
+          
+          cml publish --md reports/plot.png >> report.md
+
+          cml send-comment report.md
+```
+
+### DVC.yaml
+```sh
+stages:
+  train:
+    cmd: python src/models/train_model.py
+    deps:
+      - data
+      - src/models/train_model.py
+  predict:
+    cmd: python src/models/predict_model.py
+    deps:
+    - data
+    - src/models/predict_model.py
+    metrics:
+    - reports/metrics.json:
+        cache: false
+    plots:
+    - reports/loss.csv:
+        cache: false
+```
+https://github.com/asheshd/pset2_cc - A project to serve model for AWS and make prediction with MLCP method.
 
 
 ### Built With
