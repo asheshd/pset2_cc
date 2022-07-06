@@ -3,6 +3,8 @@ import pickle
 import numpy as np
 import pandas as pd
 
+from modelstore import ModelStore
+
 from sklearn.metrics import recall_score, precision_score
 import json
 
@@ -10,7 +12,26 @@ filename = "pset2_model.sav"
 X_test = np.genfromtxt("data/processed/test_features.csv")
 y_test = np.genfromtxt("data/processed/test_labels.csv")
 
-model = pickle.load(open(os.path.join("models", filename), 'rb'))
+# Fetch deployed model from AWS S3 bucket
+
+model_store = ModelStore.from_aws_s3("iiscdvc")
+domain_name = "pset2-prod-mlcp-model"
+
+# model_path = model_store.download(
+#    local_path=".",
+#    domain=domain_name
+# )
+
+# model_name  = os.path.join(model_path, "model")
+# print ("Successfully loaded model from S3")
+# print (os.listdir(model_name))
+
+# Load Model from S3
+model =  modelstore.load(domain_name)
+print(model)
+
+#  Local loading for evaluation
+# model = pickle.load(open(os.path.join("models", filename), 'rb'))
 
 # Get overall accuracy
 acc = model.score(X_test, y_test)
