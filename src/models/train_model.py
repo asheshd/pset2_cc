@@ -14,9 +14,18 @@ model = MLPClassifier(random_state=0, max_iter=1)
 
 model.fit(X_train, y_train)
 
-# Save model
+# Save model Locally for further evaluation
 
 filename = "pset2_model.sav"
 pickle.dump(model, open(os.path.join("models", filename), 'wb'))
 
-print("Model saved successfully")
+model_store = ModelStore.from_aws_s3("iiscdvc")
+
+# Save model in AWS S3 bucket
+
+domain = "pset2-prod-mlcp-model"
+meta_data = model_store.upload(domain, model=model)
+
+print(json.dumps(meta_data, indent=4))
+
+print ("Model saved successfully in S3.")
