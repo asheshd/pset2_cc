@@ -22,15 +22,13 @@ model_path = model_store.download(
    domain=domain_name
 )
 
-model_name  = os.path.join(model_path, "model")
 print ("Successfully loaded model from S3")
-print (os.listdir(model_name))
 
 # Load Model from S3
 # model =  model_store.load(domain_name)
 # print(model)
 
-#  Local loading for evaluation
+#  Model loading for prediction
 model = pickle.load(open(os.path.join("models", filename), 'rb'))
 
 # Get overall accuracy
